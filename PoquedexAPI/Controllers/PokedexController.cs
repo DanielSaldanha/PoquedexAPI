@@ -17,8 +17,10 @@ namespace PoquedexAPI.Controllers
         {
             Random r = new Random();
             int Id = r.Next(1, 151);
+
             var client = _IHttpClientFactory.CreateClient("CurrencyAPI");
             var response = await client.GetAsync($"pokemon/{Id}");
+
             if (!response.IsSuccessStatusCode)
             {
                 return StatusCode((int)response.StatusCode, $"Erro ao obter o Pokémon {Id}.");
@@ -39,14 +41,16 @@ namespace PoquedexAPI.Controllers
         
             var client = _IHttpClientFactory.CreateClient("CurrencyAPI");
             var response = await client.GetAsync($"pokemon/{name}");
+
             if (!response.IsSuccessStatusCode)
             {
                 return StatusCode((int)response.StatusCode, $"Erro ao obter o Pokémon {name}.");
             }
 
             //var pokemon = await response.Content.ReadFromJsonAsync<Pokemon
-            var pokemonJson = await response.Content.ReadAsStringAsync();
-            var pokemon = JsonSerializer.Deserialize<Pokemon>(pokemonJson);
+            var pokemon = await response.Content.ReadAsStringAsync();//var pokemonJson = await response.Content.ReadAsStringAsync();
+            // var pokemon = JsonSerializer.Deserialize<Pokemon>(pokemonJson);
+            // as dua modificaçoes acima sao necessarias caso o retorno seja um json(voce acesse o segundo get)
             if (pokemon == null)
             {
                 return NotFound("Pokémon não encontrado.");
