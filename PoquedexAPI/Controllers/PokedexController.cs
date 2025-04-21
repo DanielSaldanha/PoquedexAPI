@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
+using PoquedexAPI.Auth;
 using PoquedexAPI.Model;
 using System.Runtime.InteropServices.JavaScript;
 using System.Text.Json;
@@ -12,6 +13,19 @@ namespace PoquedexAPI.Controllers
         {
             _IHttpClientFactory = IHttpClientFactory;
         }
+        /*
+        [HttpPost("crie uma senha")]
+        public IActionResult CreatePassword([FromBody] string password)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                return BadRequest("Senha não pode ser nula ou vazia.");
+            }
+           BasicAuth p = new BasicAuth(null);
+            p.s3nh4 = password;
+            return Ok();
+        }
+        */
         [HttpGet("pegue um pokemon aleatorio")]
         public async Task<IActionResult> P0k3m0n()
         {
@@ -60,7 +74,7 @@ namespace PoquedexAPI.Controllers
         [HttpGet("pegue um pokemon via id")]
         public async Task<IActionResult> P0k3m0nName(int Id)
         {
-
+           
             var client = _IHttpClientFactory.CreateClient("CurrencyAPI");
             var response = await client.GetAsync($"pokemon/{Id}");
             if (!response.IsSuccessStatusCode)
